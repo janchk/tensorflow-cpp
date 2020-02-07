@@ -14,11 +14,12 @@
 #=============================================================================
 
 # Set default versions
-BZL_VERSION="0.19.2"
+BZL_VERSION="0.25.0"
+TF_VARIANT="gpu"
 
 # Set the default version and variant
 if [ -z ${TF_VERSION} ];
-then TF_VERSION="1.13";
+then TF_VERSION="1.15";
 fi
 if [ -z ${TF_VARIANT} ];
 then TF_VARIANT="gpu";
@@ -53,7 +54,7 @@ then
 fi
 
 # Download and install system dependencies
-sudo apt-get install -y pkg-config zip g++ zlib1g-dev unzip python python3
+sudo apt-get install -y pkg-config zip g++ zlib1g-dev unzip python python3 autoconf libtool curl automake make
 
 # Download and install Bazel
 if ! [ -x "$(command -v bazel)" ];
@@ -62,6 +63,24 @@ then
   wget https://github.com/bazelbuild/bazel/releases/download/${BZL_VERSION}/bazel-${BZL_VERSION}-installer-linux-x86_64.sh -P /tmp/bazel/
   chmod +x /tmp/bazel/bazel-${BZL_VERSION}-installer-linux-x86_64.sh
   /tmp/bazel/bazel-${BZL_VERSION}-installer-linux-x86_64.sh --prefix=/home/$USER/.local
+fi
+
+# Install spec ific version of Protobuf (3.8.0)
+if ! [ -d "${TF_SRC}" ];
+then
+  echo "TensorFlow: Build: Cloning Protobuf";
+  git clone https://github.com/protocolbuffers/protobuf.git ${TF_SRC};
+  cd protobuf
+  git submodule update --init --recursive
+  ./autogen.sh
+  
+  echo "TensorFlow: Build: Building Protobuf";
+  make -j8
+  make check -j8
+
+  echo "TensorFlow: Build: Installing Protobuf system-wide";
+  make install
+  sudo ldconfig
 fi
 
 # Clone TensorFlow source
@@ -101,7 +120,9 @@ cp -r -L ${TF_SRC}/bazel-genfiles/* ${TF_LIB}/include/bazel-genfiles
 cp -r -L ${TF_SRC}/bazel-src/tensorflow/* ${TF_LIB}/include/tensorflow
 cp -r -L ${TF_SRC}/bazel-src/external/nsync/public ${TF_LIB}/include/nsync/
 cp -r -L ${TF_SRC}/bazel-src/external/gemmlowp/public ${TF_LIB}/include/gemmlowp/
-cp -r -L ${TF_SRC}/bazel-src/external/protobuf_archive/src/* ${TF_LIB}/include/
+
+# cp -r -L ${TF_SRC}/bazel-src/external/protobuf_archive/src/* ${TF_LIB}/include/
+
 cp -r -L ${TF_SRC}/bazel-src/external/com_google_absl/absl ${TF_LIB}/include/
 cp -r -L ${TF_SRC}/bazel-src/third_party/* ${TF_LIB}/include/third_party/
 
@@ -116,8 +137,9 @@ cp -r -L ${TF_SRC}/third_party/eigen3 ${TF_LIB}/include/third_party/
 # Copy binary contents
 echo "TensorFlow: Build: Copying libraries";
 cp ${TF_SRC}/bazel-bin/tensorflow/libtensorflow_cc.so ${TF_LIB}/lib/
-cp ${TF_SRC}/bazel-bin/tensorflow/libtensorflow_framework.so ${TF_LIB}/lib/
-cp ${TF_SRC}/bazel-src/bazel-out/host/bin/external/protobuf_archive/libprotobuf.so ${TF_LIB}/lib;
+cp ${TF_SRC}/bazel-bin/tensorflow/libtensorflow_framework.so.1 ${TF_LIB}/lib/libtensorflow_framework.so
+
+# cp ${TF_SRC}/bazel-src/bazel-out/host/bin/external/protobuf_archive/libprotobuf.so ${TF_LIB}/lib;
 
 # Completion
 echo "TensorFlow: Build: Done!";

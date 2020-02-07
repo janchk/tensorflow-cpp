@@ -1,27 +1,23 @@
-![TensorFlow](doc/figures/tensorflow-logo.png)
-![C++](doc/figures/cpp-logo.png)
-![CMake](doc/figures/cmake-logo.png)
-
-[![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](http://docs.leggedrobotics.com/tensorflow/)
-[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/tensorflow-cpp/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/tensorflow-cpp/job/master/)
-
 # TensorFlow CMake
 
-This repository provides pre-built TensorFlow for C/C++ (headers + libraries) and CMake.
+This repository is a fork of [this](https://github.com/leggedrobotics/tensorflow-cpp) repository. With some changes 
 
-**Maintainer:** Vassilios Tsounis  
-**Affiliation:** Robotic Systems Lab, ETH Zurich  
-**Contact:** tsounisv@ethz.ch
+* Upgraded Tensorflow version
+* Removed binaries
+* Changed parameters for bazel build
+
+This repository provides scripts for compiling and installing TensorFlow for C/C++ (headers + libraries) and CMake.
+
+**Maintainer:** Jan Akhremchik  
 
 ## Overview
 
 This repository provides TensorFlow libraries with the following specifications:  
 
-  - Provided versions: `1.13.2` (Default)
+  - Provided versions: `1.15.2` (Default)
   - Supports Ubuntu 18.04 LTS (GCC >=7.4).  
-  - Provides variants for CPU-only and Nvidia GPU respectively.  
-  - All variants are built with full CPU optimizations available for `amd64` architectures.  
-  - GPU variants are built to support compute capabilities: `5.0`, `6.1`, `7.0`, `7.2`, `7.5`  
+  - Provides variants Nvidia GPU.  
+  - GPU variants are built to support compute capabilities:  `6.1`, `7.0`, `7.2`, `7.5`  
 
 **NOTE:** This repository does not include or bundle the source TensorFlow [repository](https://github.com/tensorflow/tensorflow).
 
@@ -29,11 +25,7 @@ This repository provides TensorFlow libraries with the following specifications:
 
 First clone this repository:
 ```bash
-git clone https://github.com/leggedrobotics/tensorflow-cpp.git
-```
-or if using SSH:
-```bash
-git clone git@github.com:leggedrobotics/tensorflow-cpp.git
+git clone https://github.com/janchk/tensorflow-cpp.git
 ```
 
 ### Eigen
@@ -43,9 +35,17 @@ To install the special version of Eigen requried by TensorFlow that we also bund
 cd tensorflow/eigen
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=~/.local -DCMAKE_BUILD_TYPE=Release ..
-make install -j
+make install -j{your core count}
 ```
 **NOTE:** We recommend installing to `~/.local` in order to prevent conflicts with other version of Eigen which may be installed via `apt`. Eigen exports its package during the build step, so CMake will default to finding the one we just installed unless a `HINT` is used or `CMAKE_PREFIX_PATH` is set to another location.  
+
+### Protobuf
+
+You could install protobuf by yourself following this [instruction](https://github.com/protocolbuffers/protobuf/blob/master/src/README.md).
+
+**NOTE:** You need to use version 3.8.0.
+
+As alternative you could use script `build.sh` in `tensorflow-cpp/protobuf` which installing protobuf **system-wide**
 
 ### TensorFlow
 
@@ -56,18 +56,13 @@ These are the options for using the TensorFlow CMake package:
 cd tensorflow/tensorflow
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=~/.local -DCMAKE_BUILD_TYPE=Release ..
-make install -j
+make install -j{your core count}
 ```
-**NOTE:** The CMake will download the pre-built headers and binaries at build time and should only happen on the first run.
+**NOTE:** The CMake will download all required sources for `tensorflow` and then build them.
 
 **Option 2 (Advanced):** Create symbolic link to your target workspace directory:
 ```bash
 ln -s /<SOURCE-PATH>/tensorflow/tensorflow <TARGET-PATH>/
-```
-
-For example, when including as part of larger CMake build or in a Catkin workspace
-```bash
-ln -s ~/git/tensorflow/tensorflow ~/catkin_ws/src/
 ```
 
 ## Use
@@ -95,7 +90,6 @@ target_compile_features(tf_hello PRIVATE cxx_std_14)
 ```
 **NOTE:** For more information on using CMake targets please refer to this excellent [article](https://pabloariasal.github.io/2018/02/19/its-time-to-do-cmake-right/).
 
-A complete [example](https://github.com/leggedrobotics/tensorflow-cpp/tree/master/tensorflow/examples) is included in this repository to provide boilerplate CMake for developers of dependent projects and packages.
 
 ## Customize
 

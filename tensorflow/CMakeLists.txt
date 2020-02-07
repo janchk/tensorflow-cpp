@@ -1,17 +1,5 @@
-#=============================================================================
-# Copyright (C) 2020, Robotic Systems Lab, ETH Zurich
-# All rights reserved.
-# http://www.rsl.ethz.ch
-# https://bitbucket.org/leggedrobotics/tensorflow
-#
-# This software is distributed WITHOUT ANY WARRANTY; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the License for more information.
-#=============================================================================
-# Authors: Vassilios Tsounis, tsounsiv@ethz.ch
-#=============================================================================
 cmake_minimum_required(VERSION 3.10)
-project(TensorFlow VERSION 0.1.1 LANGUAGES CXX)
+project(TensorFlow VERSION 0.2.0 LANGUAGES CXX)
 
 # Include CMake helper packages and utilities
 include(GNUInstallDirs)
@@ -21,7 +9,7 @@ include(CMakePackageConfigHelpers)
 # Options
 #==
 
-option(TF_USE_GPU "Configures TensorFlow for Nvidia CUDA GPUs." OFF)
+option(TF_USE_GPU "Configures TensorFlow for Nvidia CUDA GPUs." ON)
 option(TF_USE_IN_SOURCE "Configures TensorFlow for in-source builds." OFF)
 
 #==
@@ -40,38 +28,43 @@ endif()
 # Build configuration
 #==
 
-# Step 1: Determine if a provided or custom build should be used
+# Binaries not work YET
 if(NOT DEFINED TENSORFLOW_ROOT)
-  # Sets the version to use if not otherwise specied by the user
-  # NOTE: Users wanting to use other provided versions should specify
-  # this at build time using command line: -DTENSORFLOW_VERSION=<VERSION>
-  if(NOT DEFINED TENSORFLOW_VERSION)
-    set(TENSORFLOW_VERSION "1.13.2")
-  endif()
-  # Sets to use CPU-only (default) or GPU-enabled (optional) builds
-  if(TF_USE_GPU)
-    set(TENSORFLOW_DIST ${TENSORFLOW_VERSION}-gpu)
-  else()
-    set(TENSORFLOW_DIST ${TENSORFLOW_VERSION}-cpu)
-  endif()
-  set(TENSORFLOW_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/lib/${TENSORFLOW_DIST})
-  # Retrieve pre-built binaries and headers if they dont exist
-  if(NOT EXISTS ${TENSORFLOW_SRC_DIR})
-    set(TFLIBZIP ${TENSORFLOW_SRC_DIR}.zip)
-    set(TFLIBURL https://github.com/leggedrobotics/tensorflow-cpp/releases/download/v0.1.1/${TENSORFLOW_DIST}.zip)
-    message(STATUS "Downloading binaries from '${TFLIBURL}'. Please wait ...")
-    if(NOT EXISTS ${TFLIBZIP})
-      file(DOWNLOAD ${TFLIBURL} ${TFLIBZIP})
-    endif()
-    execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xf ${TFLIBZIP} WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib)
-  endif()
-  message(STATUS "Done.")
-  get_filename_component(TENSORFLOW_SRC_DIR ${TENSORFLOW_SRC_DIR} REALPATH)
-else()
-  # Uses user-specified (custom) build
-  set(TENSORFLOW_VERSION "Custom")
-  set(TENSORFLOW_SRC_DIR ${TENSORFLOW_ROOT})
+  message(FATAL_ERROR "You must define TENSORFLOW_ROOT")
 endif()
+
+# Step 1: Determine if a provided or custom build should be used
+# if(NOT DEFINED TENSORFLOW_ROOT)
+#   # Sets the version to use if not otherwise specied by the user
+#   # NOTE: Users wanting to use other provided versions should specify
+#   # this at build time using command line: -DTENSORFLOW_VERSION=<VERSION>
+#   if(NOT DEFINED TENSORFLOW_VERSION)
+#     set(TENSORFLOW_VERSION "1.15.2")
+#   endif()
+#   # Sets to use CPU-only (default) or GPU-enabled (optional) builds
+#   if(TF_USE_GPU)
+#     set(TENSORFLOW_DIST ${TENSORFLOW_VERSION}-gpu)
+#   else()
+#     set(TENSORFLOW_DIST ${TENSORFLOW_VERSION}-cpu)
+#   endif()
+#   set(TENSORFLOW_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/lib/${TENSORFLOW_DIST})
+#   # Retrieve pre-built binaries and headers if they dont exist
+#   if(NOT EXISTS ${TENSORFLOW_SRC_DIR})
+#     set(TFLIBZIP ${TENSORFLOW_SRC_DIR}.zip)
+#     set(TFLIBURL https://github.com/janchk/tensorflow-cpp/releases/download/v0.2.0/${TENSORFLOW_DIST}.zip)
+#     message(STATUS "Downloading binaries from '${TFLIBURL}'. Please wait ...")
+#     if(NOT EXISTS ${TFLIBZIP})
+#       file(DOWNLOAD ${TFLIBURL} ${TFLIBZIP})
+#     endif()
+#     execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xf ${TFLIBZIP} WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/lib)
+#   endif()
+#   message(STATUS "Done.")
+#   get_filename_component(TENSORFLOW_SRC_DIR ${TENSORFLOW_SRC_DIR} REALPATH)
+# else()
+#   # Uses user-specified (custom) build
+#   set(TENSORFLOW_VERSION "Custom")
+#   set(TENSORFLOW_SRC_DIR ${TENSORFLOW_ROOT})
+# endif()
 
 # Step 2: Determine if to include headers and libraries in-source or via the installation path
 if (TF_USE_IN_SOURCE)
