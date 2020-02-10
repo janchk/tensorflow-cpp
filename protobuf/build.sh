@@ -5,6 +5,7 @@ echo "TensorFlow: Build: Cloning Protobuf";
 git clone https://github.com/protocolbuffers/protobuf.git ${TF_SRC};
 cd protobuf
 git submodule update --init --recursive
+git checkout 3.8.x
 ./autogen.sh
 ./configure
 

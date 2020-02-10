@@ -6,7 +6,7 @@ TF_VARIANT="gpu"
 
 # Set the default version and variant
 if [ -z ${TF_VERSION} ];
-then TF_VERSION="1.15";
+then TF_VERSION="1.14";
 fi
 if [ -z ${TF_VARIANT} ];
 then TF_VARIANT="gpu";
