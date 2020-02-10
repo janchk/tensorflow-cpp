@@ -1,18 +1,5 @@
 #!/bin/bash
 
-#=============================================================================
-# Copyright (C) 2020, Robotic Systems Lab, ETH Zurich
-# All rights reserved.
-# http://www.rsl.ethz.ch
-# https://bitbucket.org/leggedrobotics/tensorflow
-#
-# This software is distributed WITHOUT ANY WARRANTY; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-# See the License for more information.
-#=============================================================================
-# Authors: Vassilios Tsounis, tsounsiv@ethz.ch
-#=============================================================================
-
 # Set default versions
 BZL_VERSION="0.25.0"
 TF_VARIANT="gpu"
@@ -63,24 +50,6 @@ then
   wget https://github.com/bazelbuild/bazel/releases/download/${BZL_VERSION}/bazel-${BZL_VERSION}-installer-linux-x86_64.sh -P /tmp/bazel/
   chmod +x /tmp/bazel/bazel-${BZL_VERSION}-installer-linux-x86_64.sh
   /tmp/bazel/bazel-${BZL_VERSION}-installer-linux-x86_64.sh --prefix=/home/$USER/.local
-fi
-
-# Install spec ific version of Protobuf (3.8.0)
-if ! [ -d "${TF_SRC}" ];
-then
-  echo "TensorFlow: Build: Cloning Protobuf";
-  git clone https://github.com/protocolbuffers/protobuf.git ${TF_SRC};
-  cd protobuf
-  git submodule update --init --recursive
-  ./autogen.sh
-  
-  echo "TensorFlow: Build: Building Protobuf";
-  make -j8
-  make check -j8
-
-  echo "TensorFlow: Build: Installing Protobuf system-wide";
-  make install
-  sudo ldconfig
 fi
 
 # Clone TensorFlow source

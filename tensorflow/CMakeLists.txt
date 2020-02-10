@@ -11,6 +11,7 @@ include(CMakePackageConfigHelpers)
 
 option(TF_USE_GPU "Configures TensorFlow for Nvidia CUDA GPUs." ON)
 option(TF_USE_IN_SOURCE "Configures TensorFlow for in-source builds." OFF)
+option(TENSORFLOW_ROOT "Path to builded tensorflow")
 
 #==
 # Dependencies
