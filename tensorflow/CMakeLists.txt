@@ -11,7 +11,7 @@ include(CMakePackageConfigHelpers)
 
 option(TF_USE_GPU "Configures TensorFlow for Nvidia CUDA GPUs." ON)
 option(TF_USE_IN_SOURCE "Configures TensorFlow for in-source builds." OFF)
-option(TENSORFLOW_ROOT "Path to builded tensorflow")
+message(TENSORFLOW_ROOT=${TENSORFLOW_ROOT})
 
 #==
 # Dependencies
@@ -62,10 +62,15 @@ endif()
 #   message(STATUS "Done.")
 #   get_filename_component(TENSORFLOW_SRC_DIR ${TENSORFLOW_SRC_DIR} REALPATH)
 # else()
-#   # Uses user-specified (custom) build
-#   set(TENSORFLOW_VERSION "Custom")
-#   set(TENSORFLOW_SRC_DIR ${TENSORFLOW_ROOT})
+  # Uses user-specified (custom) build
+  # set(TENSORFLOW_VERSION "Custom")
+  # set(TENSORFLOW_SRC_DIR ${TENSORFLOW_ROOT})
 # endif()
+
+
+# Uses user-specified (custom) build
+set(TENSORFLOW_VERSION "Custom")
+set(TENSORFLOW_SRC_DIR ${TENSORFLOW_ROOT})
 
 # Step 2: Determine if to include headers and libraries in-source or via the installation path
 if (TF_USE_IN_SOURCE)
