@@ -1,6 +1,6 @@
 # TensorFlow CMake
 
-This repository is a fork of [this](https://github.com/leggedrobotics/tensorflow-cpp) repository. With some changes 
+This repository represents a fork of [this](https://github.com/leggedrobotics/tensorflow-cpp) repository. With some changes 
 
 * Upgraded Tensorflow version
 * Removed binaries
