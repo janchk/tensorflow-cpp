@@ -6,6 +6,7 @@ git clone https://github.com/protocolbuffers/protobuf.git ${TF_SRC};
 cd protobuf
 git submodule update --init --recursive
 ./autogen.sh
+./configure
 
 echo "TensorFlow: Build: Building Protobuf";
 make -j8
