@@ -43,9 +43,15 @@ make install -j{your core count}
 
 You could install protobuf by yourself following this [instruction](https://github.com/protocolbuffers/protobuf/blob/master/src/README.md).
 
-**NOTE:** You need to use version 3.8.0.
+**NOTE:** You need to use version 3.7.1
 
 As alternative you could use script `build.sh` in `tensorflow-cpp/protobuf` which installing protobuf **system-wide**
+
+### Abseil 
+
+Use [this](https://github.com/abseil/abseil-cpp) repository for installation.
+
+**NOTE:** Install abseil AFTER tensorflow
 
 ### TensorFlow
 
@@ -101,6 +107,10 @@ If a specialized build of TensorFlow (e.g. different verion of CUDA, NVIDIA Comp
 ```bash
 cmake -DTENSORFLOW_ROOT=~/.tensorflow/lib -DCMAKE_INSTALL_PREFIX=~/.local -DCMAKE_BUILD_TYPE=Release ..
 ```
+
+## Common problems
+* `error: 'int128' does not name a type; did you mean 'uint128'?` - Try to reinstall abseil
+* `libtensorflow_cc.so.1: cannot open shared object file: No such file or directory` - Try `sudo ldconfig`
 
 ## License
 
