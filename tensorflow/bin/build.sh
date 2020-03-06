@@ -5,75 +5,46 @@ BZL_VERSION="0.25.0"
 TF_VARIANT="gpu"
 
 # Set the default version and variant
-if [ -z ${TF_VERSION} ];
-then TF_VERSION="1.14";
+if [ -z ${TF_VERSION} ]; then
+  TF_VERSION="1.15"
 fi
-if [ -z ${TF_VARIANT} ];
-then TF_VARIANT="gpu";
-fi
-
-# TODO: check version of TF to determine version of Bazel to install
-echo "TensorFlow: Building ${TF_VERSION}-${TF_VARIANT} using Bazel ${BZL_VERSION}";
-
-# Set the default source directory
-if [ -z ${TF_SRC} ];
-then
-  TF_SRC="${HOME}/.tensorflow/src";
-  echo "TensorFlow: Build: Using default source path: ${TF_SRC}";
-else
-  echo "TensorFlow: Build: Using source path: ${TF_SRC}";
+if [ -z ${TF_VARIANT} ]; then
+  TF_VARIANT="gpu"
 fi
 
 # Set the default output directory
-if [ -z ${TF_LIB} ];
-then
-  TF_LIB="${HOME}/.tensorflow/lib/${TF_VERSION}-${TF_VARIANT}";
-  echo "TensorFlow: Build: Using default output path: ${TF_LIB}";
+if [ -z "${TF_LIB}" ]; then
+  TF_LIB="${HOME}/.tensorflow/lib/${TF_VERSION}-${TF_VARIANT}"
+  echo "TensorFlow: Build: Using default output path: ${TF_LIB}"
 else
-  echo "TensorFlow: Build: Using output path: ${TF_LIB}";
+  echo "TensorFlow: Build: Using output path: ${TF_LIB}"
 fi
 
 # Clear any existing directories
-if [ -d "${TF_LIB}" ];
-then
-  rm -rf ${TF_LIB};
-  echo "TensorFlow: Build: Removing existing directory: ${TF_LIB}";
-fi
-
-# Download and install system dependencies
-sudo apt-get install -y wget pkg-config zip g++ zlib1g-dev unzip python python3 autoconf libtool curl automake make
-sudo apt-get install python-pip
-pip install future
-# Download and install Bazel
-if ! [ -x "$(command -v bazel)" ];
-then
-  echo "TensorFlow: Build: Installing Bazel ${BZL_VERSION}";
-  wget https://github.com/bazelbuild/bazel/releases/download/${BZL_VERSION}/bazel-${BZL_VERSION}-installer-linux-x86_64.sh -P /tmp/bazel/
-  chmod +x /tmp/bazel/bazel-${BZL_VERSION}-installer-linux-x86_64.sh
-  /tmp/bazel/bazel-${BZL_VERSION}-installer-linux-x86_64.sh --prefix=/home/$USER/.local
-fi
-
-# Clone TensorFlow source
-if ! [ -d "${TF_SRC}" ];
-then
-  echo "TensorFlow: Build: Cloning TensorFlow";
-  git clone https://github.com/tensorflow/tensorflow.git ${TF_SRC};
+if [ -d "${TF_LIB}" ]; then
+  rm -rf "${TF_LIB}"
+  echo "TensorFlow: Build: Removing existing directory: ${TF_LIB}"
 fi
 
 # Configure and build TensorFlow
-if [ -d "${TF_SRC}/bazel-bin" ];
-then
-  echo "TensorFlow: Build: Removing symlinks to previous build";
-  rm -r ${TF_SRC}/bazel-*
+if [ -d "${TF_SRC}/bazel-bin" ]; then
+  echo "TensorFlow: Build: Removing symlinks to previous build"
+  rm -r "${TF_SRC}"/bazel-*
 fi
 
-cp tf_configure.bazelrc.${TF_VARIANT} ${TF_SRC}/.tf_configure.bazelrc
-if [ "${TF_VARIANT}" == "gpu" ];
-then echo "build --action_env LD_LIBRARY_PATH=\":${HOME}/.local/lib\"" >> ${TF_SRC}/.tf_configure.bazelrc;
+if [ -z "${TF_SCRPT}" ]; then
+  cp tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
+else
+  cp "${TF_SCRPT}"/tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
 fi
+
+if [ "${TF_VARIANT}" == "gpu" ]; then
+  echo "build --action_env LD_LIBRARY_PATH=\":${HOME}/.local/lib\"" >>"${TF_SRC}"/.tf_configure.bazelrc
+fi
+
 cd ${TF_SRC}
 git checkout r${TF_VERSION}
-echo "TensorFlow: Build: Building 'libtensorflow_cc'";
+echo "TensorFlow: Build: Building 'libtensorflow_cc'"
 bazel build //tensorflow:libtensorflow_cc.so
 
 # Create the output directories
@@ -85,7 +56,7 @@ mkdir -p ${TF_LIB}/include/bazel-genfiles
 mkdir -p ${TF_LIB}/lib
 
 # Copy all source contents
-echo "TensorFlow: Build: Copying headers";
+echo "TensorFlow: Build: Copying headers"
 cp -r -L ${TF_SRC}/bazel-genfiles/* ${TF_LIB}/include/bazel-genfiles
 cp -r -L ${TF_SRC}/bazel-src/tensorflow/* ${TF_LIB}/include/tensorflow
 cp -r -L ${TF_SRC}/bazel-src/external/nsync/public ${TF_LIB}/include/nsync/
@@ -105,13 +76,13 @@ mkdir -p ${TF_LIB}/include/third_party/eigen3
 cp -r -L ${TF_SRC}/third_party/eigen3 ${TF_LIB}/include/third_party/
 
 # Copy binary contents
-echo "TensorFlow: Build: Copying libraries";
+echo "TensorFlow: Build: Copying libraries"
 cp ${TF_SRC}/bazel-bin/tensorflow/libtensorflow_cc.so ${TF_LIB}/lib/
 cp ${TF_SRC}/bazel-bin/tensorflow/libtensorflow_framework.so.1 ${TF_LIB}/lib/libtensorflow_framework.so
 
 # cp ${TF_SRC}/bazel-src/bazel-out/host/bin/external/protobuf_archive/libprotobuf.so ${TF_LIB}/lib;
 
 # Completion
-echo "TensorFlow: Build: Done!";
+echo "TensorFlow: Build: Done!"
 
-# EOF
+#

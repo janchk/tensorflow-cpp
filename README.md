@@ -14,7 +14,7 @@ This repository provides scripts for compiling and installing TensorFlow for C/C
 
 This repository provides TensorFlow libraries with the following specifications:  
 
-  - Provided versions: `1.14` (Default)
+  - Provided versions: `1.15` (Default)
   - Supports Ubuntu 18.04 LTS (GCC >=7.4).  
   - Provides variants Nvidia GPU.  
   - GPU variants are built to support compute capabilities:  `6.1`, `7.0`, `7.2`, `7.5`  
