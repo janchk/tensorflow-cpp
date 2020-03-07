@@ -38,9 +38,9 @@ else
   cp "${TF_SCRPT}"/tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
 fi
 
-if [ "${TF_VARIANT}" == "gpu" ]; then
-  echo "build --action_env LD_LIBRARY_PATH=\":${HOME}/.local/lib\"" >>"${TF_SRC}"/.tf_configure.bazelrc
-fi
+#if [ "${TF_VARIANT}" == "gpu" ]; then
+#  echo "build --action_env LD_LIBRARY_PATH=\":${HOME}/.local/lib\"" >>"${TF_SRC}"/.tf_configure.bazelrc
+#fi
 
 cd ${TF_SRC}
 git checkout r${TF_VERSION}
