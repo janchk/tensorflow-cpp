@@ -45,6 +45,7 @@ fi
 cd ${TF_SRC}
 git checkout r${TF_VERSION}
 echo "TensorFlow: Build: Building 'libtensorflow_cc'"
+echo  " TensorFlow_lib ${TF_LIB}"
 bazel build //tensorflow:libtensorflow_cc.so
 
 # Create the output directories
@@ -58,14 +59,22 @@ mkdir -p ${TF_LIB}/lib
 # Copy all source contents
 echo "TensorFlow: Build: Copying headers"
 cp -r -L ${TF_SRC}/bazel-genfiles/* ${TF_LIB}/include/bazel-genfiles
-cp -r -L ${TF_SRC}/bazel-src/tensorflow/* ${TF_LIB}/include/tensorflow
-cp -r -L ${TF_SRC}/bazel-src/external/nsync/public ${TF_LIB}/include/nsync/
-cp -r -L ${TF_SRC}/bazel-src/external/gemmlowp/public ${TF_LIB}/include/gemmlowp/
+
+#cp -r -L ${TF_SRC}/bazel-src/tensorflow/* ${TF_LIB}/include/tensorflow
+#cp -r -L ${TF_SRC}/bazel-src/external/nsync/public ${TF_LIB}/include/nsync/
+#cp -r -L ${TF_SRC}/bazel-src/external/gemmlowp/public ${TF_LIB}/include/gemmlowp/
+
+cp -r -L ${TF_SRC}/bazel-tensorflow_src/tensorflow/* ${TF_LIB}/include/tensorflow
+cp -r -L ${TF_SRC}/bazel-tensorflow_src/external/nsync/public ${TF_LIB}/include/nsync/
+cp -r -L ${TF_SRC}/bazel-tensorflow_src/external/gemmlowp/public ${TF_LIB}/include/gemmlowp/
 
 # cp -r -L ${TF_SRC}/bazel-src/external/protobuf_archive/src/* ${TF_LIB}/include/
 
-cp -r -L ${TF_SRC}/bazel-src/external/com_google_absl/absl ${TF_LIB}/include/
-cp -r -L ${TF_SRC}/bazel-src/third_party/* ${TF_LIB}/include/third_party/
+#cp -r -L ${TF_SRC}/bazel-src/external/com_google_absl/absl ${TF_LIB}/include/
+#cp -r -L ${TF_SRC}/bazel-src/third_party/* ${TF_LIB}/include/third_party/
+
+cp -r -L ${TF_SRC}/bazel-tensorflow_src/external/com_google_absl/absl ${TF_LIB}/include/
+cp -r -L ${TF_SRC}/bazel-tensorflow_src/third_party/* ${TF_LIB}/include/third_party/
 
 # Remove all files which are not header files, and remove all residual empty directories
 find ${TF_LIB}/include -type f -not -name '*.h' -not -name "*.cuh" -not -name "*.hpp" -delete

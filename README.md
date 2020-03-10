@@ -111,6 +111,9 @@ cmake -DTENSORFLOW_ROOT=~/.tensorflow/lib -DCMAKE_INSTALL_PREFIX=~/.local -DCMAK
 ## Common problems
 * `error: 'int128' does not name a type; did you mean 'uint128'?` - Try to reinstall abseil
 * `libtensorflow_cc.so.1: cannot open shared object file: No such file or directory` - Try `sudo ldconfig`
+* `fatbinary external/nccl_archive/device_dlink_hdrs.fatbin failed (Exit 1)` - 
+This problem may appear in case you using cuda  v 10.2. Workaround is to remove the line 
+`"--bin2c-path=%s" % bin2c.dirname`, from the file `third_party/nccl/build_defs.bzl.tpl`
 
 ## License
 

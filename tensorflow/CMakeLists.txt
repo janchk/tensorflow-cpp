@@ -11,6 +11,8 @@ include(CMakePackageConfigHelpers)
 
 option(TF_USE_GPU "Configures TensorFlow for Nvidia CUDA GPUs." ON)
 option(TF_USE_IN_SOURCE "Configures TensorFlow for in-source builds." OFF)
+
+set(TENSORFLOW_ROOT ${TF_LIB})
 message(TENSORFLOW_ROOT=${TENSORFLOW_ROOT})
 
 #==
