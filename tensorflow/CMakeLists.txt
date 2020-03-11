@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(TensorFlow VERSION 0.2.0 LANGUAGES CXX)
+project(TensorFlow VERSION 0.1.0a LANGUAGES CXX)
 
 # Include CMake helper packages and utilities
 include(GNUInstallDirs)

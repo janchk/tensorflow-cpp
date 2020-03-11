@@ -1,0 +1,30 @@
+build --action_env PYTHON_BIN_PATH="${PYTHON_BIN_PATH}"
+build --action_env PYTHON_LIB_PATH="${PYTHON_LIB_PATH}"
+build --python_path="${PYTHON_BIN_PATH}"
+build:xla --define with_xla_support=true
+build --config=xla
+build --action_env TF_NEED_OPENCL_SYCL="0"
+build --action_env TF_NEED_ROCM="0"
+build --action_env TF_NEED_CUDA="${TF_NEED_CUDA}"
+build --action_env TF_NEED_TENSORRT="${TF_NEED_TENSORRT}"
+build --action_env CUDA_TOOLKIT_PATH="${CUDA_TOOLKIT_PATH}"
+build --action_env TF_CUDA_VERSION="${TF_CUDA_VERSION}"
+build --action_env CUDNN_INSTALL_PATH="${CUDNN_INSTALL_PATH}"
+build --action_env TF_CUDNN_VERSION="7"
+build --action_env TF_NCCL_VERSION=""
+build --action_env TF_CUDA_COMPUTE_CAPABILITIES="${CUDA_COMPUTE_CAPABILITIES}"
+build --action_env TF_CUDA_CLANG="${TF_CUDA_CLANG}"
+build --action_env GCC_HOST_COMPILER_PATH="${GCC_HOST_COMPILER_PATH}"
+build --config=cuda
+build --config=noaws
+build --config=noignite
+build --config=nogcp
+build --config=nohdfs
+build --config=nonccl
+test --config=cuda
+build:opt --copt=-fPIC
+build:opt --copt=-march=native
+build:opt --copt=-Wno-sign-compare
+build:opt --host_copt=-march=native
+build:opt --define with_default_optimizations=true
+build:v1 --define=tf_api_version=1
