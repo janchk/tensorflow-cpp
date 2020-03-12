@@ -7,15 +7,41 @@ include(CMakePackageConfigHelpers)
 
 set(TF_SCRPT ${PROJECT_SOURCE_DIR}/tensorflow/bin)
 
+OPTION(WITH_PROTOBUF "Build and install protobuff" OFF)
+OPTION(WITH_EIGEN "Build and install eigen" OFF)
+OPTION(WITH_ABSEIL "Build and install Abseil" OFF)
+
 #==
 # Setting scripts and main paths
 #==
 
 set(TF_PREPARE_SCRIPT "${TF_SCRPT}/prepare.sh")
 set(TF_BUILD_SCRIPT "${TF_SCRPT}/build.sh")
+set(PROTOBUF_SCRIPT "${PROJECT_SOURCE_DIR}/protobuf/build.sh")
+set(ABSEIL_INIT_SCRIPT "${PROJECT_SOURCE_DIR}/abseil/build.sh")
+set(EIGEN_SCRIPT "")
+
 
 set(TF_SRC "${PROJECT_BINARY_DIR}/tensorflow_src")
 set(TF_LIB "${PROJECT_BINARY_DIR}/tensorflow_lib")
+
+#==
+# Installing prerequisites
+#==
+
+if(WITH_PROTOBUF)
+    execute_process(COMMAND ${PROTOBUF_SCRIPT})
+endif()
+
+if(WITH_EIGEN)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/eigen)
+endif()
+
+if(WITH_ABSEIL)
+    execute_process(COMMAND ${ABSEIL_INIT_SCRIPT})
+    add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
+endif()
+
 
 #==
 # Setting main variables
