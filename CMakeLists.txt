@@ -180,6 +180,11 @@ add_custom_target(TensorflowLIB
         COMMAND ${CMAKE_COMMAND} -E env "TF_LIB=${TF_LIB}" "TF_SRC=${TF_SRC}" "TF_SCRPT=${TF_SCRPT}" /bin/sh ${TF_BUILD_SCRIPT}
         )
 
+add_custom_target(Protobuf
+        COMMAND echo "Start building Protobuf"
+        COMMAND ${CMAKE_COMMAND} /bin/sh ${PROTOBUF_SCRIPT}
+        )
+
 #==
 # Installation part
 #==
