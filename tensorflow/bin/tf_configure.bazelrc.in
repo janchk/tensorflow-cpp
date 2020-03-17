@@ -15,8 +15,8 @@ ${BUILD_CONFIG_V2}
 
 build --action_env TF_NEED_OPENCL_SYCL="0"
 build --action_env TF_NEED_ROCM="0"
-build --action_env TF_NEED_CUDA="${TF_NEED_CUDA}"
-build --action_env TF_NEED_TENSORRT="${TF_NEED_TENSORRT}"
+build --action_env TF_NEED_CUDA="${TF_NEED_CUDA_INT}"
+build --action_env TF_NEED_TENSORRT="${TF_NEED_TENSORRT_INT}"
 build --action_env CUDA_TOOLKIT_PATH="${CUDA_TOOLKIT_PATH}"
 build --action_env TF_CUDA_VERSION="${TF_CUDA_VERSION}"
 build --action_env CUDNN_INSTALL_PATH="${CUDNN_INSTALL_PATH}"

@@ -72,6 +72,7 @@ set(ENV{TF_LIB} "${TF_LIB}")
 #==
 
 # Config build options
+
 # Preconfigured Bazel build configs to DISABLE default on features
 if (NOT AWS_SUPPORT)
     set(BUILD_AWS "build --config=noaws")
@@ -99,10 +100,10 @@ endif ()
 
 # Preconfigured Bazel build configs.
 
-if(XLA_SUPPORT)
+if (XLA_SUPPORT)
     set(BUILD_XLA "build --config=xla")
     set(BUILD_XLA_SUPPORT "build:xla --define with_xla_support=true")
-endif()
+endif ()
 
 if (MKL_SUPPORT)
     set(BUILD_MKL "build --config=mkl")
@@ -143,6 +144,7 @@ set(PYTHON_LIB_PATH "/usr/local/lib/python3.6/dist-packages" CACHE STRING "Set p
 
 if (TF_NEED_CUDA)
 
+    set(TF_NEED_CUDA_INT "1")
     set(TEST_CUDA "test --config=cuda")
     set(BUILD_CUDA "build --config=cuda")
     set(TF_CUDA_VERSION "10.2" CACHE STRING "Set Cuda version for GPU build")
@@ -151,6 +153,9 @@ if (TF_NEED_CUDA)
     set(CUDA_COMPUTE_CAPABILITIES "7.2,7,5" CACHE STRING "Set compute capabilities that need to be supported")
 
     OPTION(TF_NEED_TENSORRT "In case you want to compile Tensorflow with TensorRT support" OFF)
+    if (TF_NEED_TENSORRT)
+        set(TF_NEED_TENORRT_INT "1")
+    endif ()
     OPTION(TF_CUDA_CLANG "In case you need to use Clang as CUDA compiler" OFF)
 
     if (TF_CUDA_CLANG)
@@ -158,6 +163,9 @@ if (TF_NEED_CUDA)
     else ()
         set(GCC_HOST_COMPILER_PATH "/usr/bin/gcc" CACHE STRING "Set path to gcc compiler")
     endif ()
+else ()
+    set(TF_NEED_CUDA_INT "0")
+    set(TF_NEED_TENSORRT_INT "0")
 endif ()
 
 execute_process(COMMAND ${TF_PREPARE_SCRIPT})
