@@ -47,19 +47,19 @@ set(TF_LIB "${PROJECT_BINARY_DIR}/tensorflow_lib")
 # Installing prerequisites
 #==
 
-if (WITH_PROTOBUF)
-    execute_process(COMMAND ${PROTOBUF_SCRIPT})
-endif ()
+#if (WITH_PROTOBUF)
+#    execute_process(COMMAND ${PROTOBUF_SCRIPT})
+#endif ()
 
 #if (WITH_EIGEN)
 #    add_subdirectory(${PROJECT_SOURCE_DIR}/eigen)
 #endif ()
 
-if (WITH_ABSEIL)
-    execute_process(COMMAND echo "Enabling abseil installation")
-    execute_process(COMMAND ${ABSEIL_INIT_SCRIPT})
-#    add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
-endif ()
+#if (WITH_ABSEIL)
+#    execute_process(COMMAND echo "Enabling abseil installation")
+#    execute_process(COMMAND ${ABSEIL_INIT_SCRIPT})
+    #    add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
+#endif ()
 
 #==
 # Setting main variables
@@ -181,10 +181,22 @@ add_custom_target(TensorflowLIB
         COMMAND ${CMAKE_COMMAND} -E env "TF_LIB=${TF_LIB}" "TF_SRC=${TF_SRC}" "TF_SCRPT=${TF_SCRPT}" /bin/sh ${TF_BUILD_SCRIPT}
         )
 
-add_custom_target(Protobuf
-        COMMAND echo "Start building Protobuf"
-        COMMAND ${CMAKE_COMMAND} /bin/sh ${PROTOBUF_SCRIPT}
-        )
+if (WITH_PROTOBUF)
+#    add_custom_target(Protobuf ALL
+#            COMMAND echo "Start building Protobuf"
+#            COMMAND ${CMAKE_COMMAND} /bin/sh ${PROTOBUF_SCRIPT}
+#            )
+endif ()
+
+if (WITH_ABSEIL)
+    message("Abseil build has been enabled")
+#    add_custom_target(Abseil ALL
+#            COMMAND echo "Start building Abseil"
+#            COMMAND /bin/sh ${ABSEIL_INIT_SCRIPT}
+#            )
+endif()
+
+
 
 #==
 # Installation part
@@ -197,7 +209,7 @@ message(TENSORFLOW_ROOT=${TENSORFLOW_ROOT})
 set(TENSORFLOW_VERSION "Custom")
 set(TENSORFLOW_SRC_DIR ${TENSORFLOW_ROOT})
 
-# Step 2: Determine if to include headers and libraries in-source or via the installation path
+# Determine if to include headers and libraries in-source or via the installation path
 if (TF_USE_IN_SOURCE)
     set(TENSORFLOW_INSTALL_DIR ${TENSORFLOW_SRC_DIR})
 else ()

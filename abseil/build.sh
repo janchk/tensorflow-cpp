@@ -2,7 +2,7 @@
 
 echo "Initing abseil repo!"
 git submodule update --init --recursive
-cd abseil-cpp
+cd abseil-cpp || pwd
 mkdir build && cd build
 cmake ..
 make -j
