@@ -34,7 +34,8 @@ ${BUILD_HDFS}
 ${BUILD_NCCL}
 ${BUILD_KAFKA}
 
-test --config=cuda
+${TEST_CUDA}
+
 build:opt --copt=-fPIC
 build:opt --copt=-march=native
 build:opt --copt=-Wno-sign-compare

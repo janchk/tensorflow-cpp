@@ -143,6 +143,7 @@ set(PYTHON_LIB_PATH "/usr/local/lib/python3.6/dist-packages" CACHE STRING "Set p
 
 if (TF_NEED_CUDA)
 
+    set(TEST_CUDA "test --config=cuda")
     set(BUILD_CUDA "build --config=cuda")
     set(TF_CUDA_VERSION "10.2" CACHE STRING "Set Cuda version for GPU build")
     set(CUDA_TOOLKIT_PATH "/usr/local/cuda" CACHE STRING "Set path to cuda toolkit")
