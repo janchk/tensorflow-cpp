@@ -150,7 +150,7 @@ if (TF_NEED_CUDA)
     set(CUDNN_INSTALL_PATH "/usr/lib/x86_64-linux-gnu" CACHE STRING "Set path to cudnn")
     set(CUDA_COMPUTE_CAPABILITIES "7.2,7,5" CACHE STRING "Set compute capabilities that need to be supported")
 
-    OPTION(TF_NEED_TENSORRT "In case you want to compile Tensorflow with TensorRT support" ON)
+    OPTION(TF_NEED_TENSORRT "In case you want to compile Tensorflow with TensorRT support" OFF)
     OPTION(TF_CUDA_CLANG "In case you need to use Clang as CUDA compiler" OFF)
 
     if (TF_CUDA_CLANG)

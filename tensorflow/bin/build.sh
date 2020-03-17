@@ -32,11 +32,11 @@ if [ -d "${TF_SRC}/bazel-bin" ]; then
   rm -r "${TF_SRC}"/bazel-*
 fi
 
-if [ -z "${TF_SCRPT}" ]; then
-  cp tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
-else
-  cp "${TF_SCRPT}"/tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
-fi
+#if [ -z "${TF_SCRPT}" ]; then
+#  cp tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
+#else
+#  cp "${TF_SCRPT}"/tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
+#fi
 
 #if [ "${TF_VARIANT}" == "gpu" ]; then
 #  echo "build --action_env LD_LIBRARY_PATH=\":${HOME}/.local/lib\"" >>"${TF_SRC}"/.tf_configure.bazelrc
