@@ -20,7 +20,7 @@ OPTION(DYNAMIC_KERNELS "(Experimental) Build kernels into separate shared object
 OPTION(CONFIG_V2 "Build TensorFlow 2.x instead of 1.x." OFF)
 
 
-OPTION(XLA_SUPPORT "Build with XLA" ON)
+OPTION(XLA_SUPPORT "Build with XLA" OFF)
 OPTION(AWS_SUPPORT "Build with AWS S3 filesystem support" OFF)
 OPTION(IGNITE_SUPPORT "Build with Apache Ignite support" OFF)
 OPTION(GCP_SUPPORT "Build with gcp support" OFF)
@@ -134,7 +134,7 @@ endif ()
 
 
 #OPTION(TF_NEED_OPENCL_SYCL "In case you want to compile Tensorflow with openCL support" OFF)
-OPTION(TF_NEED_CUDA "In case you want to compile Tensorflow with CUDA support" ON)
+OPTION(TF_NEED_CUDA "In case you want to compile Tensorflow with CUDA support" OFF)
 
 
 set(PYTHON_BIN_PATH "/usr/bin/python3" CACHE STRING "Set path to python binary. 3x version is preferable")
