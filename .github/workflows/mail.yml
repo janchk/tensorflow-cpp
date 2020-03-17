@@ -25,7 +25,7 @@ jobs:
     - name: install Dependencies
       run: |
         cd tensorflow/bin
-        chomd +x dependencies.sh
+        chmod +x dependencies.sh
         ./dependencies.sh
 
     - name: install abseil
