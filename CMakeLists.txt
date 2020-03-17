@@ -51,13 +51,14 @@ if (WITH_PROTOBUF)
     execute_process(COMMAND ${PROTOBUF_SCRIPT})
 endif ()
 
-if (WITH_EIGEN)
-    add_subdirectory(${PROJECT_SOURCE_DIR}/eigen)
-endif ()
+#if (WITH_EIGEN)
+#    add_subdirectory(${PROJECT_SOURCE_DIR}/eigen)
+#endif ()
 
 if (WITH_ABSEIL)
+    execute_process(COMMAND echo "Enabling abseil installation")
     execute_process(COMMAND ${ABSEIL_INIT_SCRIPT})
-    add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
+#    add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
 endif ()
 
 #==
