@@ -41,7 +41,6 @@ You can pass this arguments directly or use `cmake-gui` to handle them in easy w
 `CMAKE_INSTALL_PREFIX`\
 `CUDA_COMPUTE_CAPABILITIES`\
 `CUDA_TOOLKIT_PATH`\
-`CUDA_VER`\
 `CUDNN_INSTALL_PATH`\
 `PYTHON_BIN_PATH`\
 `PYTHON_LIB_PATH`\

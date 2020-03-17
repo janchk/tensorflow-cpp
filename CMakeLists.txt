@@ -11,6 +11,24 @@ OPTION(WITH_PROTOBUF "Build and install protobuff" OFF)
 OPTION(WITH_EIGEN "Build and install eigen" OFF)
 OPTION(WITH_ABSEIL "Build and install Abseil" OFF)
 
+OPTION(MKL_SUPPORT "Build with MKL support" OFF)
+OPTION(MONOLITHIC "Config for mostly static monolithic build" OFF)
+OPTION(GDR_SUPPORT "Build with libverbs support" OFF)
+OPTION(NGRAPH_SUPPORT "Build with Intel nGraph support" OFF)
+OPTION(NUMA_SUPPORT "Build with NUMA support" OFF)
+OPTION(DYNAMIC_KERNELS "(Experimental) Build kernels into separate shared objects" OFF)
+OPTION(CONFIG_V2 "Build TensorFlow 2.x instead of 1.x." OFF)
+
+
+OPTION(XLA_SUPPORT "Build with XLA" ON)
+OPTION(AWS_SUPPORT "Build with AWS S3 filesystem support" OFF)
+OPTION(IGNITE_SUPPORT "Build with Apache Ignite support" OFF)
+OPTION(GCP_SUPPORT "Build with gcp support" OFF)
+OPTION(HDFS_SUPPORT "Build with hdfs support" OFF)
+OPTION(NCCL_SUPPORT "Build with nccl support" OFF)
+OPTION(KAFKA_SUPPORT "Build with Apache Kafka support" OFF)
+
+
 #==
 # Setting scripts and main paths
 #==
@@ -29,19 +47,18 @@ set(TF_LIB "${PROJECT_BINARY_DIR}/tensorflow_lib")
 # Installing prerequisites
 #==
 
-if(WITH_PROTOBUF)
+if (WITH_PROTOBUF)
     execute_process(COMMAND ${PROTOBUF_SCRIPT})
-endif()
+endif ()
 
-if(WITH_EIGEN)
+if (WITH_EIGEN)
     add_subdirectory(${PROJECT_SOURCE_DIR}/eigen)
-endif()
+endif ()
 
-if(WITH_ABSEIL)
+if (WITH_ABSEIL)
     execute_process(COMMAND ${ABSEIL_INIT_SCRIPT})
     add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
-endif()
-
+endif ()
 
 #==
 # Setting main variables
@@ -50,10 +67,71 @@ endif()
 set(ENV{TF_SRC} "${TF_SRC}")
 set(ENV{TF_LIB} "${TF_LIB}")
 
-
 #==
 # Setting options for configure file
 #==
+
+# Config build options
+# Preconfigured Bazel build configs to DISABLE default on features
+if (NOT AWS_SUPPORT)
+    set(BUILD_AWS "build --config=noaws")
+endif ()
+
+if (NOT IGNITE_SUPPORT)
+    set(BUILD_IGNITE "build --config=noignite")
+endif ()
+
+if (NOT GCP_SUPPORT)
+    set(BUILD_GCP "build --config=nogcp")
+endif ()
+
+if (NOT HDFS_SUPPORT)
+    set(BUILD_HDFS "build --config=nohdfs")
+endif ()
+
+if (NOT NCCL_SUPPORT)
+    set(BUILD_NCCL "build --config=nonccl")
+endif ()
+
+if (NOT KAFKA_SUPPORT)
+    set(BUILD_KAFKA "build --config=nokafka")
+endif ()
+
+# Preconfigured Bazel build configs.
+
+if(XLA_SUPPORT)
+    set(BUILD_XLA "build --config=xla")
+    set(BUILD_XLA_SUPPORT "build:xla --define with_xla_support=true")
+endif()
+
+if (MKL_SUPPORT)
+    set(BUILD_MKL "build --config=mkl")
+endif ()
+
+if (MONOLITHIC)
+    set(BUILD_MONOLITHIC "build --config=monolithic")
+endif ()
+
+if (GDR_SUPPORT)
+    set(BUILD_GDR "build --config=gdr")
+endif ()
+
+if (NGRAPH_SUPPORT)
+    set(BUILD_NGRAPH "build --config=ngraph")
+endif ()
+
+if (NUMA_SUPPORT)
+    set(BUILD_NUMA "build --config=numa")
+endif ()
+
+if (DYNAMIC_KERNELS)
+    set(BUILD_DYNAMIC_KERNELS "build --config=dynamic_kernels")
+endif ()
+
+if (CONFIG_V2)
+    set(BUILD_CONFIG_V2 "build --config=v2")
+endif ()
+
 
 #OPTION(TF_NEED_OPENCL_SYCL "In case you want to compile Tensorflow with openCL support" OFF)
 OPTION(TF_NEED_CUDA "In case you want to compile Tensorflow with CUDA support" ON)
@@ -65,10 +143,11 @@ set(PYTHON_LIB_PATH "/usr/local/lib/python3.6/dist-packages" CACHE STRING "Set p
 
 if (TF_NEED_CUDA)
 
+    set(BUILD_CUDA "build --config=cuda")
     set(TF_CUDA_VERSION "10.2" CACHE STRING "Set Cuda version for GPU build")
     set(CUDA_TOOLKIT_PATH "/usr/local/cuda" CACHE STRING "Set path to cuda toolkit")
     set(CUDNN_INSTALL_PATH "/usr/lib/x86_64-linux-gnu" CACHE STRING "Set path to cudnn")
-    set(CUDA_COMPUTE_CAPABILITIES "5.0,6.1,7.0,7.2,7,5" CACHE STRING "Set compute capabilities that need to be supported")
+    set(CUDA_COMPUTE_CAPABILITIES "7.2,7,5" CACHE STRING "Set compute capabilities that need to be supported")
 
     OPTION(TF_NEED_TENSORRT "In case you want to compile Tensorflow with TensorRT support" ON)
     OPTION(TF_CUDA_CLANG "In case you need to use Clang as CUDA compiler" OFF)
@@ -109,8 +188,6 @@ if (TF_USE_IN_SOURCE)
 else ()
     set(TENSORFLOW_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 endif ()
-
-
 
 #==
 # Build target
