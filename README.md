@@ -4,13 +4,15 @@ This repository is a modified version of [that](https://github.com/janchk/tensor
 
 **Maintainer:** Jan Akhremchik  
 
+![CI](https://github.com/janchk/tensorflow-cpp/workflows/CI/badge.svg?branch=automated_build)
+
 ## Overview
 
 This repository provides TensorFlow libraries with the following specifications:  
 
   - Provided versions: `1.15` (Default)
   - Supports Ubuntu 18.04 LTS (GCC >=7.4).  
-  - Provides variants Nvidia GPU.  
+  - Provides variants for Nvidia GPU.  
 
 ## Install
 
