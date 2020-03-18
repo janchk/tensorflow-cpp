@@ -34,6 +34,12 @@ jobs:
         chmod +x build.sh
         ./build.sh
 
+    - name: install protobuf
+      run |
+        cd protobuf
+        chmod +x build.sh
+        ./build.sh
+
     - name: Build TF
       run: |
         mkdir build && cd build
