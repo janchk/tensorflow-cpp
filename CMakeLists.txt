@@ -47,9 +47,9 @@ set(TF_LIB "${PROJECT_BINARY_DIR}/tensorflow_lib")
 # Installing prerequisites
 #==
 
-#if (WITH_PROTOBUF)
-#    execute_process(COMMAND ${PROTOBUF_SCRIPT})
-#endif ()
+if (WITH_PROTOBUF)
+    execute_process(COMMAND ${PROTOBUF_SCRIPT})
+endif ()
 
 #if (WITH_EIGEN)
 #    add_subdirectory(${PROJECT_SOURCE_DIR}/eigen)
