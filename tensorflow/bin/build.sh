@@ -46,7 +46,8 @@ cd ${TF_SRC}
 git checkout r${TF_VERSION}
 echo "TensorFlow: Build: Building 'libtensorflow_cc'"
 echo  " TensorFlow_lib ${TF_LIB}"
-bazel build //tensorflow:libtensorflow_cc.so
+#bazel build //tensorflow:libtensorflow_cc.so
+bazel build --cxxopt=-std=c++11 -c opt //tensorflow:libtensorflow_cc.so
 
 # Create the output directories
 mkdir -p ${TF_LIB}/include/third_party
@@ -58,6 +59,7 @@ mkdir -p ${TF_LIB}/lib
 
 # Copy all source contents
 echo "TensorFlow: Build: Copying headers"
+echo "TF_SRC = "${TF_SRC}
 cp -r -L ${TF_SRC}/bazel-genfiles/* ${TF_LIB}/include/bazel-genfiles
 
 #cp -r -L ${TF_SRC}/bazel-src/tensorflow/* ${TF_LIB}/include/tensorflow

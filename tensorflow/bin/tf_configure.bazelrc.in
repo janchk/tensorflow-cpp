@@ -41,4 +41,5 @@ build:opt --copt=-march=native
 build:opt --copt=-Wno-sign-compare
 build:opt --host_copt=-march=native
 build:opt --define with_default_optimizations=true
+build:opt --cxxopt=-std=c++11
 build:v1 --define=tf_api_version=1

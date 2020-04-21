@@ -58,7 +58,7 @@ endif ()
 #if (WITH_ABSEIL)
 #    execute_process(COMMAND echo "Enabling abseil installation")
 #    execute_process(COMMAND ${ABSEIL_INIT_SCRIPT})
-    #    add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
+#    add_subdirectory(${PROJECT_SOURCE_DIR}/abseil/abseil-cpp)
 #endif ()
 
 #==
@@ -151,11 +151,13 @@ if (TF_NEED_CUDA)
     set(TF_CUDA_VERSION "10.2" CACHE STRING "Set Cuda version for GPU build")
     set(CUDA_TOOLKIT_PATH "/usr/local/cuda" CACHE STRING "Set path to cuda toolkit")
     set(CUDNN_INSTALL_PATH "/usr/lib/x86_64-linux-gnu" CACHE STRING "Set path to cudnn")
-    set(CUDA_COMPUTE_CAPABILITIES "7.2,7,5" CACHE STRING "Set compute capabilities that need to be supported")
+    set(CUDA_COMPUTE_CAPABILITIES "7.2,7.5" CACHE STRING "Set compute capabilities that need to be supported")
 
     OPTION(TF_NEED_TENSORRT "In case you want to compile Tensorflow with TensorRT support" OFF)
     if (TF_NEED_TENSORRT)
         set(TF_NEED_TENORRT_INT "1")
+    else ()
+        set(TF_NEED_TENSORRT_INT "0")
     endif ()
     OPTION(TF_CUDA_CLANG "In case you need to use Clang as CUDA compiler" OFF)
 
@@ -182,20 +184,19 @@ add_custom_target(TensorflowLIB
         )
 
 if (WITH_PROTOBUF)
-#    add_custom_target(Protobuf ALL
-#            COMMAND echo "Start building Protobuf"
-#            COMMAND ${CMAKE_COMMAND} /bin/sh ${PROTOBUF_SCRIPT}
-#            )
+    #    add_custom_target(Protobuf ALL
+    #            COMMAND echo "Start building Protobuf"
+    #            COMMAND ${CMAKE_COMMAND} /bin/sh ${PROTOBUF_SCRIPT}
+    #            )
 endif ()
 
 if (WITH_ABSEIL)
     message("Abseil build has been enabled")
-#    add_custom_target(Abseil ALL
-#            COMMAND echo "Start building Abseil"
-#            COMMAND /bin/sh ${ABSEIL_INIT_SCRIPT}
-#            )
-endif()
-
+    #    add_custom_target(Abseil ALL
+    #            COMMAND echo "Start building Abseil"
+    #            COMMAND /bin/sh ${ABSEIL_INIT_SCRIPT}
+    #            )
+endif ()
 
 
 #==
