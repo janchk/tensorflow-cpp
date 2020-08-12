@@ -24,27 +24,7 @@ else
   echo "TensorFlow: Build: Using source path: ${TF_SRC}";
 fi
 
-## Set the default output directory
-#if [ -z "${TF_LIB}" ];
-#then
-#  TF_LIB="${HOME}/.tensorflow/lib/${TF_VERSION}-${TF_VARIANT}";
-#  echo "TensorFlow: Build: Using default output path: ${TF_LIB}";
-#else
-#  echo "TensorFlow: Build: Using output path: ${TF_LIB}";
-#fi
-#
-## Clear any existing directories
-#if [ -d "${TF_LIB}" ];
-#then
-#  rm -rf "${TF_LIB}";
-#  echo "TensorFlow: Build: Removing existing directory: ${TF_LIB}";
-#fi
-
-# Download and install system dependencies
-#sudo apt-get install -y wget pkg-config zip g++ zlib1g-dev unzip python python3 autoconf libtool curl automake make
-#sudo apt-get install python-pip
-#pip install future
-# Download and install Bazel
+ Download and install Bazel
 if ! [ -x "$(command -v bazel)" ];
 then
   echo "TensorFlow: Build: Installing Bazel ${BZL_VERSION}";
@@ -58,5 +38,6 @@ if ! [ -d "${TF_SRC}" ];
 then
   echo "TensorFlow: Build: Cloning TensorFlow";
   git clone https://github.com/tensorflow/tensorflow.git "${TF_SRC}";
+  git checkout -b1.15;
 fi
 

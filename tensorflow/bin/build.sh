@@ -32,16 +32,6 @@ if [ -d "${TF_SRC}/bazel-bin" ]; then
   rm -r "${TF_SRC}"/bazel-*
 fi
 
-#if [ -z "${TF_SCRPT}" ]; then
-#  cp tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
-#else
-#  cp "${TF_SCRPT}"/tf_configure.bazelrc.${TF_VARIANT} "${TF_SRC}"/.tf_configure.bazelrc
-#fi
-
-#if [ "${TF_VARIANT}" == "gpu" ]; then
-#  echo "build --action_env LD_LIBRARY_PATH=\":${HOME}/.local/lib\"" >>"${TF_SRC}"/.tf_configure.bazelrc
-#fi
-
 cd ${TF_SRC}
 git checkout r${TF_VERSION}
 echo "TensorFlow: Build: Building 'libtensorflow_cc'"
@@ -62,18 +52,11 @@ echo "TensorFlow: Build: Copying headers"
 echo "TF_SRC = "${TF_SRC}
 cp -r -L ${TF_SRC}/bazel-genfiles/* ${TF_LIB}/include/bazel-genfiles
 
-#cp -r -L ${TF_SRC}/bazel-src/tensorflow/* ${TF_LIB}/include/tensorflow
-#cp -r -L ${TF_SRC}/bazel-src/external/nsync/public ${TF_LIB}/include/nsync/
-#cp -r -L ${TF_SRC}/bazel-src/external/gemmlowp/public ${TF_LIB}/include/gemmlowp/
 
 cp -r -L ${TF_SRC}/bazel-tensorflow_src/tensorflow/* ${TF_LIB}/include/tensorflow
 cp -r -L ${TF_SRC}/bazel-tensorflow_src/external/nsync/public ${TF_LIB}/include/nsync/
 cp -r -L ${TF_SRC}/bazel-tensorflow_src/external/gemmlowp/public ${TF_LIB}/include/gemmlowp/
 
-# cp -r -L ${TF_SRC}/bazel-src/external/protobuf_archive/src/* ${TF_LIB}/include/
-
-#cp -r -L ${TF_SRC}/bazel-src/external/com_google_absl/absl ${TF_LIB}/include/
-#cp -r -L ${TF_SRC}/bazel-src/third_party/* ${TF_LIB}/include/third_party/
 
 cp -r -L ${TF_SRC}/bazel-tensorflow_src/external/com_google_absl/absl ${TF_LIB}/include/
 cp -r -L ${TF_SRC}/bazel-tensorflow_src/third_party/* ${TF_LIB}/include/third_party/
