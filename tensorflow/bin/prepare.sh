@@ -38,6 +38,6 @@ if ! [ -d "${TF_SRC}" ];
 then
   echo "TensorFlow: Build: Cloning TensorFlow";
   git clone https://github.com/tensorflow/tensorflow.git "${TF_SRC}";
-  git checkout v1.15.3;
+  git checkout r1.15;
 fi
 
