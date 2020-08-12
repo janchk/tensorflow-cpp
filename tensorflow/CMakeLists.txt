@@ -170,7 +170,11 @@ install(
   DESTINATION
     ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake
 )
+message(TENSORFLOW_SRC_HEADERS = ${TENSORFLOW_SRC_HEADERS})
+message(TENSORFLOW_SRC_LIBRARIES = ${TENSORFLOW_SRC_LIBRARIES})
 
+message(CMAKE_INSTALL_INCLUDEDIR = ${CMAKE_INSTALL_INCLUDEDIR})
+message(CMAKE_INSTALL_LIBDIR = ${CMAKE_INSTALL_LIBDIR})
 # Install the library (i.e. headers and libraries) if not used in-source
 if (NOT TF_USE_IN_SOURCE)
   install(
