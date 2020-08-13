@@ -24,7 +24,7 @@ else
   echo "TensorFlow: Build: Using source path: ${TF_SRC}";
 fi
 
- Download and install Bazel
+# Download and install Bazel
 if ! [ -x "$(command -v bazel)" ];
 then
   echo "TensorFlow: Build: Installing Bazel ${BZL_VERSION}";

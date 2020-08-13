@@ -6,13 +6,14 @@ project(TensorFlowExamples VERSION 0.0.0 LANGUAGES CXX)
 #==
 
 find_package(TensorFlow CONFIG REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 #==
 # Build target
 #==
 
 add_executable(tf_hello_world src/main.cpp)
-target_link_libraries(tf_hello_world PUBLIC TensorFlow::TensorFlow)
+target_link_libraries(tf_hello_world PUBLIC TensorFlow::TensorFlow Eigen3::Eigen)
 target_compile_features(tf_hello_world PRIVATE cxx_std_14)
 
 #==
